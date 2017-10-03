@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <!-- theme stuff -->
+
+    <!-- Bootstrap core CSS     -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Animation library for notifications   -->
+    <link href="assets/css/animate.min.css" rel="stylesheet"/>
+
+    <!--  Light Bootstrap Table core CSS    -->
+    <link href="assets/css/light-bootstrap-dashboard.css" rel="stylesheet"/>
+
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="assets/css/demo.css" rel="stylesheet"/>
+
+
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet"/>
+    <!-- theme stuff -->
+
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        function viewDashboard() {
+            $('#upload_box').hide();
+            $('#credentials_box').hide();
+            $('#dashboard_main').show();
+            $('li').eq(0).addClass('active');
+            $('li').eq(1).removeClass('active');
+            $('li').eq(2).removeClass('active');
+        };
+        function viewUpload() {
+            $('#dashboard_main').hide();
+            $('#credentials_box').hide();
+            $('#upload_box').show();
+            $('li').eq(1).addClass('active');
+            $('li').eq(0).removeClass('active');
+            $('li').eq(2).removeClass('active');
+        };
+        function viewSettings() {
+            $('#dashboard_main').hide();
+            $('#upload_box').hide();
+            $('#credentials_box').show();
+            $('li').eq(2).addClass('active');
+            $('li').eq(1).removeClass('active');
+            $('li').eq(0).removeClass('active');
+        }
+
+        $(document).ready(function () {
+            viewDashboard();
+            $.post("/getReport")
+                .done(function (data) {
+                    // twino
+                    $('#twino_capital').html(data.twinoReport.capital);
+                    $('#twino_interest').html(data.twinoReport.interest);
+                    $('#twino_invested_amount').html(data.twinoReport.investedAmount);
+                    $('#twino_available_cash').html(data.twinoReport.availableCash);
+                    $('#twino_account_value').html(data.twinoReport.accountValue);
+
+                    // mintos
+                    $('#mintos_capital').html(data.mintosReport.capital);
+                    $('#mintos_interest').html(data.mintosReport.interest);
+                    $('#mintos_invested_amount').html(data.mintosReport.investedAmount);
+                    $('#mintos_available_cash').html(data.mintosReport.availableCash);
+                    $('#mintos_account_value').html(data.mintosReport.accountValue);
+
+                    // viventor
+                    $('#viventor_capital').html(data.viventorReport.capital);
+                    $('#viventor_interest').html(data.viventorReport.interest);
+                    $('#viventor_invested_amount').html(data.viventorReport.investedAmount);
+                    $('#viventor_available_cash').html(data.viventorReport.availableCash);
+                    $('#viventor_account_value').html(data.viventorReport.accountValue);
+
+                    // summe
+                    $('#summe_capital').html(data.sumReport.capital);
+                    $('#summe_interest').html(data.sumReport.interest);
+                    $('#summe_invested_amount').html(data.sumReport.investedAmount);
+                    $('#summe_available_cash').html(data.sumReport.availableCash);
+                    $('#summe_account_value').html(data.sumReport.accountValue);
+                });
+
+            $.post("/getConfig").done(function (data) {
+                var mintosActive = data.AUTO_IMPORT_MINTOS;
+                var twinoActive = data.AUTO_IMPORT_TWINO;
+                var viventorActive = data.AUTO_IMPORT_VIVENTOR;
+                if (mintosActive !== false) {
+                    $('#mintosActive').prop('checked', mintosActive);
+                }
+                if (twinoActive !== false) {
+                    $('#twinoActive').prop('checked', twinoActive);
+                }
+                if (viventorActive !== false) {
+                    $('#viventorActive').prop('checked', viventorActive);
+                }
+            });
+            $.post("/getCredentialsSettings").done(function (data) {
+                $('#twinoUser').val(data.TWINO.user);
+                $('#twinoPw').val(data.TWINO.password);
+
+                $('#mintosUser').val(data.MINTOS.user);
+                $('#mintosPw').val(data.MINTOS.password);
+
+                $('#viventorUser').val(data.VIVENTOR.user);
+                $('#viventorPw').val(data.VIVENTOR.password);
+
+            });
+        });
+
+
+    </script>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="sidebar" data-color="orange" data-image="assets/img/sidebar-5.jpg">
+        <div class="sidebar-wrapper">
+            <ul class="nav">
+                <li>
+                    <a onclick="viewDashboard()">
+                        <i class="pe-7s-graph"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="viewUpload()">
+                        <i class="pe-7s-upload"></i>
+                        <p>Manueller Upload</p>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="viewSettings()">
+                        <i class="pe-7s-edit"></i>
+                        <p>Scraper Einstellungen</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-panel">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">P2P Dashboard by <a href="https://www.finanziell-frei-sein.eu/">Finanziell-frei-sein.eu</a>
+                                </h4>
+                            </div>
+
+                            <div id="dashboard_main" class="content table-responsive table-full-width">
+                                <table class="table table-hover table-striped">
+                                    <thead>
+
+                                    <th>Platform</th>
+                                    <th>Capital</th>
+                                    <th>Earnings</th>
+                                    <th>Account Value</th>
+                                    <th>invested Amount</th>
+                                    <th>available Cash</th>
+
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Twino</td>
+                                        <td id="twino_capital"></td>
+                                        <td id="twino_interest"></td>
+                                        <td id="twino_account_value"></td>
+                                        <td id="twino_invested_amount"></td>
+                                        <td id="twino_available_cash"></td>
+                                    </tr>
+                                    <tr>
+
+                                        <td><a href="https://c.trackmytarget.com/k486c6?source_id=autaf">Mintos</a></td>
+                                        <td id="mintos_capital"></td>
+                                        <td id="mintos_interest"></td>
+                                        <td id="mintos_account_value"></td>
+                                        <td id="mintos_invested_amount"></td>
+                                        <td id="mintos_available_cash"></td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                        <td>Viventor</td>
+                                        <td id="viventor_capital"></td>
+                                        <td id="viventor_interest"></td>
+                                        <td id="viventor_account_value"></td>
+                                        <td id="viventor_invested_amount"></td>
+                                        <td id="viventor_available_cash"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Summe</td>
+                                        <td id="summe_capital"></td>
+                                        <td id="summe_interest"></td>
+                                        <td id="summe_account_value"></td>
+                                        <td id="summe_invested_amount"></td>
+                                        <td id="summe_available_cash"></td>
+
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                            <div id="upload_box" class="content table-responsive table-full-width">
+                                <div>
+                                    <form method="POST" enctype="multipart/form-data" action="/uploadTwino">
+
+                                            <span class="btn btn-default btn-file">
+                                                    Twino Export Datei ausw&auml;hlen: <input type="file" name="file"/>
+                                            </span>
+
+                                        <input type="submit" value="Upload"/>
+
+                                    </form>
+                                </div>
+                                <div>
+                                    <form method="POST" enctype="multipart/form-data" action="/uploadMintos">
+
+                                            <span class="btn btn-default btn-file">
+                                                    Mintos Export Datei ausw&auhlen: <input type="file" name="file"/>
+                                            </span>
+
+                                        <input type="submit" value="Upload"/>
+
+                                    </form>
+                                </div>
+                                <div>
+                                    <form method="POST" enctype="multipart/form-data" action="/uploadViventor">
+
+                                            <span class="btn btn-default btn-file">
+                                                    Viventor Export Datei ausw&auhlen: <input type="file" name="file"/>
+                                            </span>
+
+                                        <input type="submit" value="Upload"/>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div id="credentials_box" class="content table-responsive table-full-width">
+                                <form method="POST" enctype="multipart/form-data" action="/saveScraperSettings">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="twinoActive">Twino Auto Import active?</label>
+                                                <input class="form-control" type="checkbox" id="twinoActive"
+                                                       name="twinoActive"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="twinoUser">Twino User:</label>
+                                                <input class="form-control" type="text" id="twinoUser"
+                                                       name="twinoUser"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="twinoPw">Twino Password:</label>
+                                                <input class="form-control" type="password" id="twinoPw"
+                                                       name="twinoPw"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="mintosActive">Mintos Auto Import active?</label>
+                                                <input class="form-control" type="checkbox" id="mintosActive"
+                                                       name="mintosActive"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="mintosUser">Mintos User:</label>
+                                                <input class="form-control" type="text" id="mintosUser"
+                                                       name="mintosUser"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="mintosPw">Mintos Password:</label>
+                                                <input class="form-control" type="password" id="mintosPw"
+                                                       name="mintosPw"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="viventorActive">Viventor Auto Import active?</label>
+                                                <input class="form-control" type="checkbox" id="viventorActive"
+                                                       name="viventorActive"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="viventorUser">Viventor User:</label>
+                                                <input class="form-control" type="text" id="viventorUser"
+                                                       name="viventorUser"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="viventorPw">Viventor Password:</label>
+                                                <input class="form-control" type="password" id="viventorPw"
+                                                       name="viventorPw"/>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button class="btn btn-info btn-fill pull-right" type="submit" value="Speichern">
+                                        Speichern
+                                    </button>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>
