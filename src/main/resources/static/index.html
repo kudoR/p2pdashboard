@@ -16,7 +16,7 @@
 
 
     <!--  CSS for Demo Purpose, don't include it in your project     -->
-    <link href="assets/css/demo.css" rel="stylesheet"/>
+    <!--<link href="assets/css/demo.css" rel="stylesheet"/>-->
 
 
     <!--     Fonts and icons     -->
@@ -25,10 +25,10 @@
     <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet"/>
     <!-- theme stuff -->
 
-    <script
-            src="https://code.jquery.com/jquery-3.2.1.min.js"
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
+    <link href="assets/js/bootstrap-checkbox-radio-switch.js" rel="stylesheet"/>
     <script type="text/javascript">
         function viewDashboard() {
             $('#upload_box').hide();
@@ -113,10 +113,16 @@
                 $('#viventorPw').val(data.VIVENTOR.password);
 
             });
+
+          //  $('#twinoActive').bootstrapSwitch();
         });
 
 
+
+
+
     </script>
+
 </head>
 <body>
 
@@ -253,11 +259,10 @@
                             <div id="credentials_box" class="content table-responsive table-full-width">
                                 <form method="POST" enctype="multipart/form-data" action="/saveScraperSettings">
                                     <div class="row">
-                                        <div class="col-md-2">
-                                            <div class="form-group">
+                                        <div class="col-md-3">
+                                            <div style="text-align:center" class="form-group">
                                                 <label for="twinoActive">Twino Auto Import active?</label>
-                                                <input class="form-control" type="checkbox" id="twinoActive"
-                                                       name="twinoActive"/>
+                                                <input type="checkbox" id="twinoActive" name="twinoActive" style="width:100%"/>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -271,16 +276,16 @@
                                             <div class="form-group">
                                                 <label for="twinoPw">Twino Password:</label>
                                                 <input class="form-control" type="password" id="twinoPw"
-                                                       name="twinoPw"/>
+                                                       name="twinoPw" />
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-2">
-                                            <div class="form-group">
+                                        <div class="col-md-3">
+                                            <div style="text-align:center" class="form-group">
                                                 <label for="mintosActive">Mintos Auto Import active?</label>
-                                                <input class="form-control" type="checkbox" id="mintosActive"
-                                                       name="mintosActive"/>
+                                                <input type="checkbox" id="mintosActive"
+                                                       name="mintosActive" style="width:100%"/>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -299,11 +304,11 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-2">
-                                            <div class="form-group">
+                                        <div class="col-md-3">
+                                            <div style="text-align:center" class="form-group">
                                                 <label for="viventorActive">Viventor Auto Import active?</label>
-                                                <input class="form-control" type="checkbox" id="viventorActive"
-                                                       name="viventorActive"/>
+                                                <input type="checkbox" id="viventorActive"
+                                                       name="viventorActive" style="width:100%"/>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
